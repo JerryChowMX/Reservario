@@ -7,92 +7,70 @@ var repoSearchTerm = document.querySelector('#repo-search-term');
 var formSubmitHandler = function (event) {
   event.preventDefault();
 
-  var username = foodInputEl.value.trim();
+  var query = foodInputEl.value.trim();
+  var cuisine = event.submitter.getAttribute('data-cuisine'); // Get cuisine from clicked button
 
-  if (username) {
-    getUserRepos(username);
+  if (query || cuisine) {
+    searchRecipes(query, cuisine);
 
     recipeContainerEl.textContent = '';
     foodInputEl.value = '';
   } else {
-    alert('Please enter a GitHub username');
+    alert('Please enter a recipe query or select a cuisine');
   }
 };
 
 var buttonClickHandler = function (event) {
-  var language = event.target.getAttribute('data-language');
-
-  if (language) {
-    getFeaturedRepos(language);
-
-    recipeContainerEl.textContent = '';
+  if (event.target.getAttribute('data-cuisine')) {
+    event.submitter = event.target; // Set the submitter to the clicked button
+    formSubmitHandler(event); // Trigger form submission with the clicked button's data
   }
 };
 
-var getUserRepos = function (user) {
-  var apiUrl = 'https://api.github.com/users/' + user + '/repos';
+var searchRecipes = function (query, cuisine) {
+  var apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
+  var apiKey = '2a90fe47e07f4eaf8fdb94eef7e059df'; // Replace with your Spoonacular API key
+
+  // Construct the API URL with query and cuisine parameters
+  apiUrl += '?apiKey=' + apiKey;
+
+  if (query) {
+    apiUrl += '&query=' + query;
+  }
+
+  if (cuisine) {
+    apiUrl += '&cuisine=' + cuisine;
+  }
 
   fetch(apiUrl)
     .then(function (response) {
       if (response.ok) {
-        response.json().then(function (data) {
-          displayRepos(data, user);
-        });
-      } else {
-        alert('Error: ' + response.statusText);
+        return response.json();
       }
+      throw new Error('Network response was not ok.');
+    })
+    .then(function (data) {
+      displayRecipes(data.results, query, cuisine);
     })
     .catch(function (error) {
-      alert('Unable to connect to GitHub');
+      console.error('There has been a problem with your fetch operation:', error);
     });
 };
 
-var getFeaturedRepos = function (language) {
-  var apiUrl = 'https://api.github.com/search/repositories?q=' + language + '+is:featured&sort=help-wanted-issues';
+var displayRecipes = function (recipes, query, cuisine) {
+  repoSearchTerm.textContent = query || cuisine;
 
-  fetch(apiUrl).then(function (response) {
-    if (response.ok) {
-      response.json().then(function (data) {
-        displayRepos(data.items, language);
-      });
-    } else {
-      alert('Error: ' + response.statusText);
-    }
-  });
-};
-
-var displayRepos = function (repos, searchTerm) {
-  if (repos.length === 0) {
-    recipeContainerEl.textContent = 'No repositories found.';
+  if (recipes.length === 0) {
+    recipeContainerEl.textContent = 'No recipes found.';
     return;
   }
 
-  repoSearchTerm.textContent = searchTerm;
+  for (var i = 0; i < recipes.length; i++) {
+    var recipeEl = document.createElement('div');
+    recipeEl.classList = 'list-item';
+    recipeEl.textContent = recipes[i].title;
 
-  for (var i = 0; i < repos.length; i++) {
-    var repoName = repos[i].owner.login + '/' + repos[i].name;
-
-    var repoEl = document.createElement('div');
-    repoEl.classList = 'list-item flex-row justify-space-between align-center';
-
-    var titleEl = document.createElement('span');
-    titleEl.textContent = repoName;
-
-    repoEl.appendChild(titleEl);
-
-    var statusEl = document.createElement('span');
-    statusEl.classList = 'flex-row align-center';
-
-    if (repos[i].open_issues_count > 0) {
-      statusEl.innerHTML =
-        "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + ' issue(s)';
-    } else {
-      statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
-    }
-
-    repoEl.appendChild(statusEl);
-
-    recipeContainerEl.appendChild(repoEl);
+    recipeContainerEl.appendChild(recipeEl);
   }
 };
 
