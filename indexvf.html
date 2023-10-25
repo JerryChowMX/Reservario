@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ <!-- <link rel="stylesheet" href="./assets/css/style.css" /> -->
+ <title> Reservario </title>
+</head>
+
+<body class="">
+ <header>
+
+  <nav>
+   <div class="nav-wrapper">
+    <a href="#!" class="brand-logo">Get your recipes!</a>
+   </div>
+  </nav>
+
+ </header>
+ <!-- New layout with materializecss v1 -->
+ <div class="row">
+
+  <div class="col s6 m4 l3"> <!-- Grey section - left smaller column -->
+   <div>
+    <h3 class="">Input your craving!</h3>
+    <form id="user-form" class="">
+     <label class="" for="query"> What do you want to cook today?</label>
+     <input name="Food" id="query" type="text" autofocus="true" class="" placeholder="Example: pasta" />
+     <button type="submit" class="btn">Get Recipe</button>
+    </form>
+   </div>
+
+   <div class="">
+    <h3 class="">Search By Cuisine</h3>
+    <div id="cuisine-buttons" class="flex-column">
+     <button data-cuisine="Mexican" class="btn">Mexican</button>
+     <button data-cuisine="Japanese" class="btn">Japanese</button>
+     <button data-cuisine="Italian" class="btn">Italian</button>
+    </div>
+   </div>
+   <div id="google_translate_element"></div>
+
+  </div>
+
+
+
+  <div class="col s12 m8 l9"> <!-- Teal section - right bigger column -->
+
+  </div>
+
+ </div>
+
+ <script src="./assets/js/script.js"></script>
+ <!-- materializecss script -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+ <!-- Google translate API link -->
+ <script type="text/javascript"
+  src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+
+</html>
