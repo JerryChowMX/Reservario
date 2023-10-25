@@ -35,11 +35,11 @@ var searchRecipes = function (query, cuisine) {
   apiUrl += '?apiKey=' + apiKey;
 
   if (query) {
-    apiUrl += '&query=' + query;
+    apiUrl += '&query=' + query + '&addRecipeInformation=true';
   }
 
   if (cuisine) {
-    apiUrl += '&cuisine=' + cuisine;
+    apiUrl += '&cuisine=' + cuisine + '&addRecipeInformation=true';
   }
 
   fetch(apiUrl)
@@ -50,6 +50,7 @@ var searchRecipes = function (query, cuisine) {
       throw new Error('Network response was not ok.');
     })
     .then(function (data) {
+      console.log(data);
       displayRecipes(data.results, query, cuisine);
     })
     .catch(function (error) {
@@ -76,11 +77,3 @@ var displayRecipes = function (recipes, query, cuisine) {
 
 userFormEl.addEventListener('submit', formSubmitHandler);
 cuisineButtonsEl.addEventListener('click', buttonClickHandler);
-
-// Google Translate API function
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    { pageLanguage: 'en' },
-    'google_translate_element'
-  );
-}
