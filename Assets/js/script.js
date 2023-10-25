@@ -8,7 +8,7 @@ var formSubmitHandler = function (event) {
   event.preventDefault();
 
   var query = foodInputEl.value.trim();
-  var cuisine = event.submitter.getAttribute('data-cuisine'); // Get cuisine from clicked button
+  var cuisine = event.submitter.getAttribute('data-cuisine'); // Get cuisine information     
 
   if (query || cuisine) {
     searchRecipes(query, cuisine);
@@ -29,9 +29,9 @@ var buttonClickHandler = function (event) {
 
 var searchRecipes = function (query, cuisine) {
   var apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
-  var apiKey = '2a90fe47e07f4eaf8fdb94eef7e059df'; // Replace with your Spoonacular API key
+  var apiKey = '2a90fe47e07f4eaf8fdb94eef7e059df'; // API Key
 
-  // Construct the API URL with query and cuisine parameters
+  // Building API key, to include addRecipeInformation
   apiUrl += '?apiKey=' + apiKey;
 
   if (query) {
@@ -70,6 +70,7 @@ var displayRecipes = function (recipes, query, cuisine) {
     var recipeEl = document.createElement('div');
     recipeEl.classList = 'list-item';
     recipeEl.textContent = recipes[i].title;
+
 
     recipeContainerEl.appendChild(recipeEl);
   }
