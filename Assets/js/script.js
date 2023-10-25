@@ -76,3 +76,11 @@ var displayRecipes = function (recipes, query, cuisine) {
 
 userFormEl.addEventListener('submit', formSubmitHandler);
 cuisineButtonsEl.addEventListener('click', buttonClickHandler);
+
+// Google Translate API function
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en' },
+    'google_translate_element'
+  );
+}
