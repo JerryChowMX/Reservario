@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
         throw new Error('Network response was not ok.');
       })
       .then(function (data) {
+        console.log(data);
         displayRecipes(data.results, query, cuisine);
       })
       .catch(function (error) {
