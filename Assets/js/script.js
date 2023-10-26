@@ -1,83 +1,90 @@
-var userFormEl = document.querySelector('#user-form');
-var cuisineButtonsEl = document.querySelector('#cuisine-buttons');
-var foodInputEl = document.querySelector('#query');
-var recipeContainerEl = document.querySelector('#recipes-container');
-var repoSearchTerm = document.querySelector('#repo-search-term');
+document.addEventListener('DOMContentLoaded', function () {
+  var userFormEl = document.querySelector('form');
+  var cuisineButtonsEl = document.querySelector('.button-container');
+  var foodInputEl = document.querySelector('#query');
+  var recipeContainerEl = document.querySelector('#recipes-container');
+  var foodSearchTerm = document.querySelector('#food-search-term');
 
-var formSubmitHandler = function (event) {
-  event.preventDefault();
+  var formSubmitHandler = function (event) {
+    event.preventDefault();
 
-  var query = foodInputEl.value.trim();
-  var cuisine = event.submitter.getAttribute('data-cuisine'); // Get cuisine information     
+    var query = foodInputEl.value.trim();
+    var cuisine = event.submitter.getAttribute('data-cuisine');
 
-  if (query || cuisine) {
-    searchRecipes(query, cuisine);
+    if (query || cuisine) {
+      searchRecipes(query, cuisine);
+      foodInputEl.value = '';
+    } else {
+      alert('Please enter a recipe query or select a cuisine');
+    }
+  };
 
-    recipeContainerEl.textContent = '';
-    foodInputEl.value = '';
-  } else {
-    alert('Please enter a recipe query or select a cuisine');
-  }
-};
+  var buttonClickHandler = function (event) {
+    if (event.target.getAttribute('data-cuisine')) {
+      event.submitter = event.target;
+      formSubmitHandler(event);
+    }
+  };
 
-var buttonClickHandler = function (event) {
-  if (event.target.getAttribute('data-cuisine')) {
-    event.submitter = event.target; // Set the submitter to the clicked button
-    formSubmitHandler(event); // Trigger form submission with the clicked button's data
-  }
-};
+  var searchRecipes = function (query, cuisine) {
+    var apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
+    var apiKey = 'b60a2d9ee19244aa9a72d17980d815e4';
 
-var searchRecipes = function (query, cuisine) {
-  var apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
-  var apiKey = '2a90fe47e07f4eaf8fdb94eef7e059df'; // API Key
+    apiUrl += '?apiKey=' + apiKey;
 
-  // Building API key, to include addRecipeInformation
-  apiUrl += '?apiKey=' + apiKey;
+    if (query) {
+      apiUrl += '&query=' + query + '&addRecipeInformation=true';
+    }
 
-  if (query) {
-    apiUrl += '&query=' + query + '&addRecipeInformation=true';
-  }
+    if (cuisine) {
+      apiUrl += '&cuisine=' + cuisine + '&addRecipeInformation=true';
+    }
 
-  if (cuisine) {
-    apiUrl += '&cuisine=' + cuisine + '&addRecipeInformation=true';
-  }
+    fetch(apiUrl)
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error('Network response was not ok.');
+      })
+      .then(function (data) {
+        displayRecipes(data.results, query, cuisine);
+      })
+      .catch(function (error) {
+        console.error('There has been a problem with your fetch operation:', error);
+      });
+  };
 
-  fetch(apiUrl)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error('Network response was not ok.');
-    })
-    .then(function (data) {
-      console.log(data);
-      displayRecipes(data.results, query, cuisine);
-    })
-    .catch(function (error) {
-      console.error('There has been a problem with your fetch operation:', error);
-    });
-};
+  var displayRecipes = function (recipes, query, cuisine) {
+    foodSearchTerm.textContent = query || cuisine;
 
-var displayRecipes = function (recipes, query, cuisine) {
-  repoSearchTerm.textContent = query || cuisine;
+    recipeContainerEl.innerHTML = ''; // Clears previous recipe results
 
-  if (recipes.length === 0) {
-    recipeContainerEl.textContent = 'No recipes found.';
-    return;
-  }
+    if (recipes.length === 0) {
+      recipeContainerEl.textContent = 'No recipes found.';
+      return;
+    }
 
-  for (var i = 0; i < recipes.length; i++) {
-    var recipeEl = document.createElement('div');
-    recipeEl.classList = 'list-item';
-    recipeEl.textContent = recipes[i].title;
+    for (var i = 0; i < recipes.length; i++) {
+      var recipeEl = document.createElement('div');
+      recipeEl.classList = 'list-item';
+      recipeEl.textContent = recipes[i].title;
 
+      recipeContainerEl.appendChild(recipeEl);
+    }
+  };
 
-    recipeContainerEl.appendChild(recipeEl);
-  }
-};
+  userFormEl.addEventListener('submit', formSubmitHandler);
+  cuisineButtonsEl.addEventListener('click', buttonClickHandler);
+});
 
-userFormEl.addEventListener('submit', formSubmitHandler);
-cuisineButtonsEl.addEventListener('click', buttonClickHandler);
+// LOLOLOLOLOL
+// LOLOLOLOLOL
+// LOLOLOLOLOL
+console.log ('hi');
+// LOLOLOLOLOL
+// LOLOLOLOLOL
+// LOLOLOLOLOL
 
 var valueSearch = document.getElementById("query");
 var searchForm = document.querySelector("searchForm");
@@ -141,5 +148,5 @@ searchForm.addEventListener("submit", function (event) {
 });
 
 
-// Calls init to retrieve data and render it to the page on load
+// Calls init to retrieve data and render it to the page on load
 init()
