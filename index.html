@@ -29,6 +29,10 @@
         <h3 class="card-header text-uppercase"> Input your craving! </h3>
         <form id="user-form" class="card-body">
           <label class="form-label" for="username"> What do you want to cook today?</label>
+          <form id="searchForm" method="POST">
+            <input name="Food" id="query" type="text" autofocus="true" class="form-input" placeholder="Example: pasta"/>
+          </form>
+          <button  type="submit" class="btn">Get Recipe</button>
           <input name="Food" id="query" type="text" autofocus="true" class="form-input" placeholder="Example: pasta" />
           <button type="submit" class="btn">Get Recipe</button>
         </form>
@@ -42,6 +46,11 @@
           <button data-cuisine="Italian" class="btn">Italian</button>
         </div>
       </div>
+    </div>
+
+    <div>
+      <h3>Recent Searches </h3>
+      <ul id="search-list"></ul>
     </div>
 
     <div class="col-12 col-md-8">
