@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // LOLOLOLOLOL
 // LOLOLOLOLOL
 // LOLOLOLOLOL
-console.log ('hi');
+console.log('hi');
 // LOLOLOLOLOL
 // LOLOLOLOLOL
 // LOLOLOLOLOL
@@ -150,3 +150,11 @@ searchForm.addEventListener("submit", function (event) {
 
 // Calls init to retrieve data and render it to the page on load
 init()
+
+// Google translate funtion:
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en' },
+    'google_translate_element'
+  );
+}
