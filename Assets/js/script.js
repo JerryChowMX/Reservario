@@ -68,10 +68,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     for (var i = 0; i < recipes.length; i++) {
       var recipeEl = document.createElement('div');
+      var sourceUrl = document.createElement('div');
+
       recipeEl.classList = 'list-item';
+      sourceUrl.classList = 'list-item';
       recipeEl.textContent = recipes[i].title;
+      sourceUrl.textContent = recipes[i].sourceUrl;
 
       recipeContainerEl.appendChild(recipeEl);
+      recipeContainerEl.appendChild(sourceUrl);
     }
   };
 
