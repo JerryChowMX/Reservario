@@ -79,14 +79,17 @@ var displayRecipes = function (recipes, query, cuisine) {
 userFormEl.addEventListener('submit', formSubmitHandler);
 cuisineButtonsEl.addEventListener('click', buttonClickHandler);
 
-var valueSearch = document.getElementById("query");
-var searchForm = document.querySelector("searchForm");
-var searchList = document.querySelector("search-list");
+var searchInput = document.querySelector(".search-text");
+var searchForm = document.querySelector(".search-form");
+var searchList = document.querySelector("#search-list");
+
 
 var searches = [];
 
 // The following function renders items in a todo list as <li> elements
 function renderSearches() {
+  // Clear todoList element and update todoCountSpan
+  searchList.innerHTML = "";
 
 
   // Render a new li for each todo
@@ -97,49 +100,66 @@ function renderSearches() {
     li.textContent = search;
     li.setAttribute("data-index", i);
 
+    var button = document.createElement("button");
+    button.textContent = "Delete Recent Search";
+
+    li.appendChild(button);
     searchList.appendChild(li);
   }
 }
 
-// This function is being called below and will run when the page loads.
+
 function init() {
-  // Get stored todos from localStorage
+
   var storedSearches = JSON.parse(localStorage.getItem("searches"));
 
-  // If todos were retrieved from localStorage, update the todos array to it
   if (storedSearches !== null) {
     searches = storedSearches;
   }
 
-  // This is a helper function that will render todos to the DOM
+
   renderSearches();
 }
 
 function storeSearches() {
-  // Stringify and set key in localStorage to todos array
+
   localStorage.setItem("searches", JSON.stringify(searches));
 }
 
-// Add submit event to form
+
 searchForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  var searchText = query.value.trim();
+  var searchText = searchInput.value.trim();
 
-  // Return from function early if submitted todoText is blank
+
   if (searchText === "") {
     return;
   }
 
-  // Add new todoText to todos array, clear the input
-  searches.push(searchText);
-  query.value = "";
 
-  // Store updated todos in localStorage, re-render the list
+  searches.push(searchText);
+  searchInput.value = "";
+
+
   storeSearches();
   renderSearches();
 });
 
+searchList.addEventListener("click", function (event) {
+  var element = event.target;
 
-// Calls init to retrieve data and render it to the page on load
+  if (element.matches("button") === true) {
+
+    var index = element.parentElement.getAttribute("data-index");
+    searches.splice(index, 1);
+
+
+    storeSearches();
+    renderSearches();
+  }
+});
+
+
 init()
+
