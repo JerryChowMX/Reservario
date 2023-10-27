@@ -87,14 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
   cuisineButtonsEl.addEventListener('click', buttonClickHandler);
 });
 
-// LOLOLOLOLOL
-// LOLOLOLOLOL
-// LOLOLOLOLOL
-console.log('hi');
-// LOLOLOLOLOL
-// LOLOLOLOLOL
-// LOLOLOLOLOL
-
 var searchInput = document.querySelector(".search-text");
 var searchForm = document.querySelector(".search-form");
 var searchList = document.querySelector("#search-list");
