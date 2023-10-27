@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  var userFormEl = document.querySelector('form');
+  var userFormEl = document.querySelector('.search-form');
   var cuisineButtonsEl = document.querySelector('.button-container');
   var foodInputEl = document.querySelector('#query');
   var recipeContainerEl = document.querySelector('#recipes-container');
