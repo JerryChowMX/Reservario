@@ -68,12 +68,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     for (var i = 0; i < recipes.length; i++) {
       var recipeEl = document.createElement('div');
-      var sourceUrl = document.createElement('div');
+      var sourceUrl = document.createElement('a');
 
       recipeEl.classList = 'list-item';
-      sourceUrl.classList = 'list-item';
+      // sourceUrl.classList = 'list-item';
+      sourceUrl.classList.add('list-item');
       recipeEl.textContent = recipes[i].title;
-      sourceUrl.textContent = recipes[i].sourceUrl;
+      // sourceUrl.textContent = data.recipes[i].sourceUrl;
+      sourceUrl.setAttribute('href', recipes[i].sourceUrl);
+      sourceUrl.textContent = 'Read More';
 
       recipeContainerEl.appendChild(recipeEl);
       recipeContainerEl.appendChild(sourceUrl);
